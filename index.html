@@ -1,104 +1,84 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Photo Filter Tool</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro AI Photo Filter App</title>
 <style>
-body{
-font-family: Arial;
-background:#f3f3f3;
-text-align:center;
-padding:40px;
-}
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f3f3;
+  text-align: center;
+  margin: 0;
+  padding: 40px;
+}h1 { margin-bottom: 20px; }
 
-h1{
-margin-bottom:20px;
-}
+.container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
 
-.container{
-display:flex;
-gap:20px;
-justify-content:center;
-flex-wrap:wrap;
-margin-top:30px;
-}
+.card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; }
 
-.card{
-background:white;
-padding:10px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.15);
-}
+img { max-width: 300px; border-radius: 12px; margin-top: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
 
-img{
-max-width:300px;
-border-radius:10px;
-}
+button { margin-top: 12px; padding: 10px 18px; border: none; background: #111; color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-button{
-margin-top:10px;
-padding:8px 15px;
-border:none;
-background:black;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-</style>
+button:hover { background: #333; } </style>
 
 </head>
-
-<body>
-
-<h1>AI Photo Filters</h1>
-
+<body><h1>Pro AI Photo Filter App</h1>
 <input type="file" id="upload">
-
 <div class="container">
+  <div class="card">
+    <h3>Black & White</h3>
+    <canvas id="bwCanvas"></canvas>
+    <button onclick="downloadFilter('bw')">Download</button>
+  </div>
+  <div class="card">
+    <h3>Warm Natural</h3>
+    <canvas id="warmCanvas"></canvas>
+    <button onclick="downloadFilter('warm')">Download</button>
+  </div>
+  <div class="card">
+    <h3>Teal Cinematic</h3>
+    <canvas id="tealCanvas"></canvas>
+    <button onclick="downloadFilter('teal')">Download</button>
+  </div>
+</div><script>
+const upload = document.getElementById('upload');
+let originalImage = new Image();
 
-<div class="card">
-<h3>Black & White</h3>
-<img id="bw">
-</div>
-
-<div class="card">
-<h3>Warm Natural</h3>
-<img id="warm">
-</div>
-
-<div class="card">
-<h3>Teal Cinematic</h3>
-<img id="teal">
-</div>
-
-</div>
-
-<script>
-
-const upload = document.getElementById("upload");
-
-upload.addEventListener("change", function(){
-
-const file = this.files[0];
-const url = URL.createObjectURL(file);
-
-document.getElementById("bw").src = url;
-document.getElementById("warm").src = url;
-document.getElementById("teal").src = url;
-
-document.getElementById("bw").style.filter =
-"grayscale(100%) contrast(90%) brightness(95%)";
-
-document.getElementById("warm").style.filter =
-"saturate(115%) brightness(105%) contrast(108%) sepia(10%)";
-
-document.getElementById("teal").style.filter =
-"saturate(110%) contrast(115%) hue-rotate(160deg)";
-
+upload.addEventListener('change', function(){
+  const file = this.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  originalImage.src = url;
 });
 
-</script>
+originalImage.onload = function(){
+  applyFilters();
+}
 
-</body>
+function applyFilters(){
+  const filters = {
+    bw: 'grayscale(100%) contrast(90%) brightness(95%)',
+    warm: 'saturate(115%) brightness(105%) contrast(108%) sepia(10%)',
+    teal: 'saturate(110%) contrast(115%) hue-rotate(160deg)'
+  };
+
+  for(const key in filters){
+    const canvas = document.getElementById(key + 'Canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+    ctx.filter = filters[key];
+    ctx.drawImage(originalImage, 0, 0);
+  }
+}
+
+function downloadFilter(type){
+  const canvas = document.getElementById(type + 'Canvas');
+  const link = document.createElement('a');
+  link.download = type + '-filter.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+</script></body>
 </html>
