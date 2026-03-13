@@ -1,102 +1,35 @@
+import React, { useState } from "react";
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My Free Private Videos🍑🍑</title>
-<style>
-body {
-display: flex;
-flex-direction: column; /* Arrange children in a column */
-align-items: center; /* Center elements horizontally */
-justify-content: center; /* Center elements vertically */
-height: 100vh;
-margin: 0;
-background-color: #121212; /* Dark background color */
-color: white; /* White text color for contrast */
-font-family: Arial, sans-serif;
-}
+export default function PhotoFilterApp(){ const [image, setImage] = useState(null);
 
-video {
-width: 90%; /* Responsive width for mobile */
-max-width: 300px; /* Maximum width */
-height: auto; /* Maintain aspect ratio */
-border-radius: 8px; /* Rounded corners */
-border: 5px solid white; /* White border around the video */
-margin-bottom: 20px; /* Add space below the video */
-display: block; /* Ensure video is treated as a block element */
-}
+const handleUpload = (e)=>{ const file = e.target.files[0]; if(file){ setImage(URL.createObjectURL(file)); } }
 
-.button {
-display: block; /* Ensure buttons are block elements */
-width: 90%; /* Responsive width for mobile */
-max-width: 250px; /* Maximum width */
-padding: 12px 20px; /* Adjust padding for better appearance */
-margin: 10px 0; /* Space between buttons */
-border: none;
-border-radius: 5px;
-color: white;
-text-align: center;
-text-decoration: none;
-font-size: 18px;
-cursor: pointer;
-}
+const filters = { bw:"grayscale(100%) contrast(90%) brightness(95%)", warm:"saturate(115%) brightness(105%) contrast(108%) sepia(10%)", teal:"saturate(110%) contrast(115%) hue-rotate(160deg)" }
 
-.green {
-background-color: green;
-animation: pulse 1s infinite; /* Pulsing effect for green button */
-}
+return ( <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center gap-6"> <h1 className="text-3xl font-bold">AI Portrait Filters</h1>
 
-.yellow {
-background-color: yellow;
-color: black; /* Change text color to black for better contrast */
-animation: pulse 1.5s infinite; /* Pulsing effect for yellow button */
-animation-delay: 1.5s; /* Start yellow pulsing after 1.5 seconds */
-}
+<input type="file" accept="image/*" onChange={handleUpload} />
 
-.red {
-background-color: red;
-/* No animation applied here, so no pulsing effect */
-}
+  {image && (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-@keyframes pulse {
-0% {
-transform: scale(1);
-}
-50% {
-transform: scale(1.05);
-}
-100% {
-transform: scale(1);
-}
-}
+      <div className="flex flex-col items-center">
+        <p className="font-semibold mb-2">Matte Black & White</p>
+        <img src={image} style={{filter:filters.bw}} className="rounded-2xl shadow-xl max-h-96" />
+      </div>
 
-@media (max-width: 600px) {
-body {
-padding: 10px; /* Add padding on smaller screens */
-}
+      <div className="flex flex-col items-center">
+        <p className="font-semibold mb-2">Warm Natural</p>
+        <img src={image} style={{filter:filters.warm}} className="rounded-2xl shadow-xl max-h-96" />
+      </div>
 
-.button {
-font-size: 16px; /* Adjust font size for smaller screens */
-padding: 10px; /* Adjust padding for smaller buttons */
-}
+      <div className="flex flex-col items-center">
+        <p className="font-semibold mb-2">Teal Cinematic</p>
+        <img src={image} style={{filter:filters.teal}} className="rounded-2xl shadow-xl max-h-96" />
+      </div>
 
-video {
-max-width: 100%; /* Allow video to take full width on small screens */
-}
-}
-</style>
-</head>
-<body>
-<video controls autoplay loop muted>
-<source src="your-video-url.mp4" type="video/mp4" />
-Your browser does not support the video tag.
-</video>
+    </div>
+  )}
+</div>
 
-<a href="https://ln.run/H_LVB" class="button green">I AND MY FRIENDS</a>
-<a href="https://ln.run/H_LVB" class="button yellow">BATHING VIDEOS</a>
-<a href="https://ln.run/H_LVB" class="button red">ALL VIDEOS</a>
-</body>
-</html>
-
+) }
