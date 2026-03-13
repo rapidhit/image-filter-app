@@ -1,35 +1,104 @@
-import React, { useState } from "react";
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Photo Filter Tool</title>
 
-export default function PhotoFilterApp(){ const [image, setImage] = useState(null);
+<style>
+body{
+font-family: Arial;
+background:#f3f3f3;
+text-align:center;
+padding:40px;
+}
 
-const handleUpload = (e)=>{ const file = e.target.files[0]; if(file){ setImage(URL.createObjectURL(file)); } }
+h1{
+margin-bottom:20px;
+}
 
-const filters = { bw:"grayscale(100%) contrast(90%) brightness(95%)", warm:"saturate(115%) brightness(105%) contrast(108%) sepia(10%)", teal:"saturate(110%) contrast(115%) hue-rotate(160deg)" }
+.container{
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+margin-top:30px;
+}
 
-return ( <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center gap-6"> <h1 className="text-3xl font-bold">AI Portrait Filters</h1>
+.card{
+background:white;
+padding:10px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+}
 
-<input type="file" accept="image/*" onChange={handleUpload} />
+img{
+max-width:300px;
+border-radius:10px;
+}
 
-  {image && (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+button{
+margin-top:10px;
+padding:8px 15px;
+border:none;
+background:black;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+</style>
 
-      <div className="flex flex-col items-center">
-        <p className="font-semibold mb-2">Matte Black & White</p>
-        <img src={image} style={{filter:filters.bw}} className="rounded-2xl shadow-xl max-h-96" />
-      </div>
+</head>
 
-      <div className="flex flex-col items-center">
-        <p className="font-semibold mb-2">Warm Natural</p>
-        <img src={image} style={{filter:filters.warm}} className="rounded-2xl shadow-xl max-h-96" />
-      </div>
+<body>
 
-      <div className="flex flex-col items-center">
-        <p className="font-semibold mb-2">Teal Cinematic</p>
-        <img src={image} style={{filter:filters.teal}} className="rounded-2xl shadow-xl max-h-96" />
-      </div>
+<h1>AI Photo Filters</h1>
 
-    </div>
-  )}
+<input type="file" id="upload">
+
+<div class="container">
+
+<div class="card">
+<h3>Black & White</h3>
+<img id="bw">
 </div>
 
-) }
+<div class="card">
+<h3>Warm Natural</h3>
+<img id="warm">
+</div>
+
+<div class="card">
+<h3>Teal Cinematic</h3>
+<img id="teal">
+</div>
+
+</div>
+
+<script>
+
+const upload = document.getElementById("upload");
+
+upload.addEventListener("change", function(){
+
+const file = this.files[0];
+const url = URL.createObjectURL(file);
+
+document.getElementById("bw").src = url;
+document.getElementById("warm").src = url;
+document.getElementById("teal").src = url;
+
+document.getElementById("bw").style.filter =
+"grayscale(100%) contrast(90%) brightness(95%)";
+
+document.getElementById("warm").style.filter =
+"saturate(115%) brightness(105%) contrast(108%) sepia(10%)";
+
+document.getElementById("teal").style.filter =
+"saturate(110%) contrast(115%) hue-rotate(160deg)";
+
+});
+
+</script>
+
+</body>
+</html>
